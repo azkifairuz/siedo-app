@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import BaseInputField from '@/components/BaseInpuField.vue'
 import { reactive } from 'vue';
+import PasswordInputField from './components/PasswordInputField.vue';
 
 const tes = reactive({
   name:"a",
@@ -25,11 +26,10 @@ function btnTes() {
      v-model="tes.name"
      type="text"
     />
-    <BaseInputField
+    <PasswordInputField
      label="Password"
      placeholder="masukan password anda"
      v-model="tes.password"
-     type="text"
     />
   </div>
   <button @click="btnTes" class="bg-secondary p-8 m-5">tes</button>
