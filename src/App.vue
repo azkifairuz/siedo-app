@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <div class="font-quicksand mx-6">
+  <div class="font-quicksand">
     <RouterView />
   </div>
 

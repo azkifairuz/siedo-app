@@ -4,46 +4,37 @@ import { computed, reactive, ref } from 'vue';
 import PasswordInputField from '@/components/PasswordInputField.vue';
 import Btn from '@/components/PrimaryButton.vue';
 import AlertDialog from '@/components/AlertDialog.vue';
-import axios from 'axios';
+import { useSignIn } from '@/stores/useSignIn';
 
 const login = reactive({
-    nidn:"",
-    password:""
+  nidn: "",
+  password: ""
 })
 const show = ref(false);
 const alertMessage = ref("");
+const authStore = useSignIn();
 async function handleLogin() {
-  console.log(login);
   try {
-    const response = await axios.post('http://localhost:3000/dosen/auth', {
-      nidn: login.nidn,
-      password: login.password
-    });
-
-    const data = response.data;
-
-  
-    alertMessage.value = `${data.message}`;
-    if(data.token) {
-        localStorage.setItem('token', data.token);
+    await authStore.signIn(login.nidn, login.password)
+    if (authStore.isAuthenticated) {
+      localStorage.setItem('token', authStore.token);
+      alertMessage.value = `${authStore.message}`;
+    }else{
+      alertMessage.value = authStore.message || "Login failed!";
     }
-      
-    
-  } catch (error) {
-    alertMessage.value = `Error: ${error.response?.data?.message || error.message}`;
+  } catch (error: any) {
+    if (error) {
+      alertMessage.value = `Error: ${error.message}`;
+    }
+  }finally {
+    show.value = true;
+    setTimeout(() => {
+      show.value = false;
+    }, 5000);
   }
-
-  show.value = true;
-  setTimeout(() => {
-    show.value = false;
-  }, 5000);
-  show.value = true;
-  setTimeout(() => {
-    show.value = false;
-  }, 5000);
 }
 const isDisable = computed(() => {
-    return !login.nidn || !login.password
+  return !login.nidn || !login.password
 })
 
 
@@ -51,20 +42,14 @@ const isDisable = computed(() => {
 </script>
 
 <template>
-    <div class="w-full flex flex-col gap-4 pt-4">
-        <h3 class="text-[18px] mb-6 w-full text-center font-semibold text-main-blue">Login</h3>
-        <BaseInputField label="Username" placeholder="masukan nidn anda" v-model="login.nidn" type="text" />
-        <PasswordInputField label="Kata Sandi" placeholder="masukan katasandi anda" v-model="login.password" />
-        <Btn 
-            @clickable="handleLogin"
-            text="Masuk"
-            color="bg-main-blue"
-            text-color="text-white"
-            width="w-full"
-            :is-disable="isDisable"
-        />
-        <h3 class="text-[12px] w-full text-center font-semibold text-main-red">Lupa kata sandi?</h3>
-    </div>
-    <AlertDialog v-if="show" :message="alertMessage" :duration="5000" />
+  <div class="w-full px-6 flex flex-col gap-4 pt-4">
+    <h3 class="text-[18px] mb-6 w-full text-center font-semibold text-main-blue">Login</h3>
+    <BaseInputField label="Username" placeholder="masukan nidn anda" v-model="login.nidn" type="text" />
+    <PasswordInputField label="Kata Sandi" placeholder="masukan katasandi anda" v-model="login.password" />
+    <Btn @clickable="handleLogin" text="Masuk" color="bg-main-blue" text-color="text-white" width="w-full"
+      :is-disable="isDisable" />
+    <h3 class="text-[12px] w-full text-center font-semibold text-main-red">Lupa kata sandi?</h3>
+  </div>
+  <AlertDialog v-if="show" :message="alertMessage" :duration="5000" />
 
 </template>
