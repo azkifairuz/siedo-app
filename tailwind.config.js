@@ -7,8 +7,9 @@ export default {
         main: {
           blue: "#112A46",
           yellow: "#FFC700",
+          red:'#FB3838'
         },
-        secondary: "#E9F4FF",
+        secondary: "#B9D3F0",
         surface: "#FFFFFF",
       },
       fontFamily: {
