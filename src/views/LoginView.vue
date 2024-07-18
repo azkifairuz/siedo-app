@@ -1,15 +1,22 @@
 <script setup lang="ts">
 import BaseInputField from '@/components/BaseInpuField.vue'
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import PasswordInputField from '@/components/PasswordInputField.vue';
 import Btn from '@/components/PrimaryButton.vue';
+import AlertDialog from '@/components/AlertDialog.vue';
+
 const login = reactive({
     nidn:"",
     password:""
 })
+const show = ref(false);
 
 function handleLogin() {
   console.log(login);
+  show.value = true;
+  setTimeout(() => {
+    show.value = false;
+  }, 5000);
 }
 const isDisable = computed(() => {
     return !login.nidn || !login.password
@@ -35,4 +42,6 @@ const isDisable = computed(() => {
         />
         <h3 class="text-[12px] w-full text-center font-semibold text-main-red">Lupa kata sandi?</h3>
     </div>
+    <AlertDialog v-if="show" message="This is an alert message!" :duration="5000" />
+
 </template>
