@@ -4,15 +4,39 @@ import { computed, reactive, ref } from 'vue';
 import PasswordInputField from '@/components/PasswordInputField.vue';
 import Btn from '@/components/PrimaryButton.vue';
 import AlertDialog from '@/components/AlertDialog.vue';
+import axios from 'axios';
 
 const login = reactive({
     nidn:"",
     password:""
 })
 const show = ref(false);
-
-function handleLogin() {
+const alertMessage = ref("");
+async function handleLogin() {
   console.log(login);
+  try {
+    const response = await axios.post('http://localhost:3000/dosen/auth', {
+      nidn: login.nidn,
+      password: login.password
+    });
+
+    const data = response.data;
+
+  
+    alertMessage.value = `${data.message}`;
+    if(data.token) {
+        localStorage.setItem('token', data.token);
+    }
+      
+    
+  } catch (error) {
+    alertMessage.value = `Error: ${error.response?.data?.message || error.message}`;
+  }
+
+  show.value = true;
+  setTimeout(() => {
+    show.value = false;
+  }, 5000);
   show.value = true;
   setTimeout(() => {
     show.value = false;
@@ -21,7 +45,6 @@ function handleLogin() {
 const isDisable = computed(() => {
     return !login.nidn || !login.password
 })
-
 
 
 
@@ -42,6 +65,6 @@ const isDisable = computed(() => {
         />
         <h3 class="text-[12px] w-full text-center font-semibold text-main-red">Lupa kata sandi?</h3>
     </div>
-    <AlertDialog v-if="show" message="This is an alert message!" :duration="5000" />
+    <AlertDialog v-if="show" :message="alertMessage" :duration="5000" />
 
 </template>
