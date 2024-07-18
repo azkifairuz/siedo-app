@@ -18,6 +18,7 @@ async function handleLogin() {
     await authStore.signIn(login.nidn, login.password)
     if (authStore.isAuthenticated) {
       localStorage.setItem('token', authStore.token);
+      localStorage.setItem('userid', authStore.user);
       alertMessage.value = `${authStore.message}`;
     }else{
       alertMessage.value = authStore.message || "Login failed!";
