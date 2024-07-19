@@ -13,7 +13,7 @@ export const useUser = defineStore("profile", {
     actions: {
         async getProfile(token: string,) {
             const response = await axios.get<BaseResponse<Profile>>(
-                "http://localhost:3000/dosen/profile",
+                `${import.meta.env.VITE_BASE_API}/dosen/profile`,
                 {
                     headers:{
                         'Authorization': token

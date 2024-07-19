@@ -6,6 +6,7 @@ import { onMounted, reactive } from 'vue';
 import type { Profile } from '@/type/Profile';
 import { useUser } from '@/stores/useProfile';
 import {  getFormattedDate } from "@/utils/formateDate";
+import { getToken } from '@/utils/getToken';
 const profile = reactive<Profile>({
   nidn: "",
   nama: "",
@@ -20,7 +21,7 @@ const profile = reactive<Profile>({
 
 const profileStore = useUser();
 
-const token = localStorage.getItem('token');
+const token = getToken()
 
 async function getProfile() {
   if (token) {
@@ -31,7 +32,6 @@ async function getProfile() {
     }
   }
 }
-const dateNow = getFormattedDate()
 
 onMounted(() => {
   getProfile()
@@ -76,7 +76,6 @@ async function hanldePresensi() {
                   <p>{{ profile.tanggalLahir }}</p>
                   <p>{{ profile.alamatSurel }}</p>
                   <p>{{ profile.noTelephone }}</p>
-                 
                 </div>
               </template>
             </CardProfile>
