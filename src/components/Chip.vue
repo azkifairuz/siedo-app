@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <template>
-    <div class="rounded-xl px-2.5 py-1" :class="`bg-${color} text-${color}`">
+    <div class="rounded-xl px-2.5  text-center border text-[8px] w-fit" :class="`border-${color} text-${color}`">
         {{ text }}
     </div>
 </template>
