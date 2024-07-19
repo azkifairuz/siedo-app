@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    dfineProps<{
+    defineProps<{
         day:string,
         semester:string,
         year:string,
@@ -9,7 +9,7 @@
 </script>
 
 <template>
-    <div class="bg-surface shadow-custom-card px-6 py-3 ">
+    <div class="bg-surface rounded-[12px] shadow-custom-card px-6 py-3 ">
         <div class="w-full flex justify-between items-center">
             <h1 class="text-[16px] font-semibold">{{ day }}</h1>
             <p class="text-xs font-normal">sem {{ semester }} {{ year }}</p>

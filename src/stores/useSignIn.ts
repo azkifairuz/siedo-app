@@ -8,7 +8,9 @@ export const useSignIn = defineStore("auth", {
     user: "",
     token: "",
     message: "",
+  
   }),
+
   actions: {
     async signIn(username: string, password: string) {
       const response = await axios.post<AuthResponse>(
