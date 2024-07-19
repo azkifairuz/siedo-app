@@ -11,6 +11,7 @@ import { useJurnal } from '@/stores/useJurnal';
 import type { Jurnal } from '@/type/Jurnal';
 import type { Pkm } from '@/type/Pkm';
 import { usePkm } from '@/stores/usePkm';
+import LoadingPage from '@/components/LoadingPage.vue';
 const profile = reactive<Profile>({
   nidn: "",
   nama: "",
@@ -31,8 +32,10 @@ const jurnalStore = useJurnal();
 const pkmStore = usePkm();
 
 const token = getToken()
-
+const isLoading = ref<boolean>(false)
 async function getProfile() {
+  isLoading.value = true
+ try {
   if (token) {
     await profileStore.getProfile(token);
     if (profileStore.profile) {
@@ -48,6 +51,12 @@ async function getProfile() {
   if (jurnalStore.jurnal) {
     pkm.value = pkmStore.pkm.slice(0, 2)
   }
+ } catch (error) {
+  console.log(error);
+  
+ }finally{
+  isLoading.value =false
+ }
 }
 
 onMounted(() => {
@@ -59,7 +68,8 @@ async function hanldePresensi() {
 
 </script>
 <template>
-  <main class="min-h-svh flex flex-col w-100  bg-main-blue">
+  <LoadingPage v-if="isLoading"/>
+  <main v-else class="min-h-svh flex flex-col w-100  bg-main-blue">
     <div class="flex  p-6 items-center justify-center">
       <p class="text-[20px] text-center flex-1 text-white">Profile dosen</p>
       <div class=" bg-black">

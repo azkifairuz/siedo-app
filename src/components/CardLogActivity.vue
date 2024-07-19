@@ -17,6 +17,7 @@ function getColor(status: string): string {
     }
 }
 
+const parseTime = props.time.split('.')
 const color = computed(() => getColor(props.status));
 </script>
 
@@ -28,8 +29,10 @@ const color = computed(() => getColor(props.status));
                 fill="#FB3838" />
         </svg>
         <div class="text-main-blue flex justify-between flex-1 flex-col ">
-            <h1 class="text-[14px] ">{{ activity }}</h1>
-            <h2 class="text-base font-semibold">{{ time }} WIB</h2>
+            <h1 v-if="activity == 'masuk'" class="text-[14px] ">Check-In</h1>
+            <h1 v-else-if="activity == 'keluar'" class="text-[14px] ">Check-Out</h1>
+            <h1 v-else class="text-[14px] ">{{activity}}</h1>
+            <h2 class="text-base font-semibold">{{ parseTime[0] }}.{{ parseTime[1] }} WIB</h2>
         </div>
    
         <div class="text-main-blue items-end lex-1 flex  justify-between flex-col gap-1">
