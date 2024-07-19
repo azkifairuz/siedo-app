@@ -17,7 +17,7 @@ const isProfileActive = computed(() => route.name === 'profile');
 </script>
 
 <template>
-  <div class="font-quicksand ">
+  <div class="font-quicksand  mb-20">
     <RouterView />
   </div>
   <nav class="fixed py-[18px] shadow-custom-bottom bg-[#FBFBFB] px-[48px] flex justify-between bottom-0 left-0 right-0">

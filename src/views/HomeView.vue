@@ -57,7 +57,7 @@ function hanldePresensi() {
         <PrimaryButton text="Presensi" color="bg-main-blue" @clickable="hanldePresensi" text-color="text-white"
           :is-disable=false width="w-full" />
       </div>
-      <div class="min-h-svh rounded-[24px] p-6  mt-[-32px] bg-[#FBFBFB] z-0 relative">
+      <div class="min-h-svh rounded-t-[24px] p-6  mt-[-32px] bg-[#FBFBFB] z-0 relative">
         <section class="jadwal-mengajar-section mt-[57px] ">
           <div class="w-full flex justify-between items-center mb-6 cursor-pointer">
             <h1 class="text-[16px] font-bold">Jadwal Mengajar</h1>
