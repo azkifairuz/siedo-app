@@ -11,7 +11,10 @@ export default {
         main: {
           blue: "#112A46",
           yellow: "#FFC700",
-          red:'#FB3838'
+          red:'#FB3838',
+          safe:'#3894FB',
+          success:'#059212',
+          neutral:'#37474F'
         },
         secondary: "#B9D3F0",
         surface: "#FFFFFF",
