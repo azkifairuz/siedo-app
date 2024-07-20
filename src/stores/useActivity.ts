@@ -12,6 +12,7 @@ export const useActivity = defineStore("activity", {
     error: false,
     message: "",
     isLoading: false,
+    isEmpty: true
   }),
   actions: {
     async getActivity(page: string, filter: string) {
@@ -34,11 +35,14 @@ export const useActivity = defineStore("activity", {
               if (data.paginationData) {
                 this.pagination = data.paginationData;
               }
+              this.isEmpty = false
               this.activity = data.data;
               this.message = data.message;
               this.error = false;
             } else {
+                this.activity = []
               this.error = true;
+              this.isEmpty = true
               this.message = data.message;
             }
         } catch (error) {

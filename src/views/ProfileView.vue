@@ -5,7 +5,6 @@ import IconHumberger from '@/components/icons/IconHumberger.vue';
 import { onMounted, reactive, ref } from 'vue';
 import type { Profile } from '@/type/Profile';
 import { useUser } from '@/stores/useProfile';
-import { getFormattedDate } from "@/utils/formateDate";
 import { getToken } from '@/utils/getToken';
 import { useJurnal } from '@/stores/useJurnal';
 import type { Jurnal } from '@/type/Jurnal';

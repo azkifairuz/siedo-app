@@ -4,7 +4,7 @@ import LoadingPage from '@/components/LoadingPage.vue';
 import { useActivity } from '@/stores/useActivity';
 import type { Activity } from '@/type/Activity';
 import { computed, onMounted, ref } from 'vue';
-
+import emptyImage from "@/assets/img/empty.png";
 const activityData = ref<Activity[]>([])
 const activityStore = useActivity()
 const whatFilter = ref<string>('all')
@@ -42,7 +42,7 @@ onMounted(() => {
 </script>
 <template>
 
-    <div class="font-quicksand  p-6 ">
+    <div class="font-quicksand min-h-screen p-6 ">
         <h1 class="text-main-blue text-center text-[18px] font-bold">Aktivitas</h1>
 
         <div class="my-6 flex gap-4 w-full justify-center items-center">
@@ -58,6 +58,10 @@ onMounted(() => {
                 :class="{ 'bg-[#E9F4FF]': isWeeklyActive }">Seminggu</button>
         </div>
         <LoadingPage v-if="activityStore.isLoading" />
+        <div v-else-if="activityStore.isEmpty" class="w-full h-full flex flex-col justify-center items-center">
+                <img :src=emptyImage alt="">
+            <h1 class="text-[18px] font-medium text-main-blue">Anda belum melakukan presensi hari ini</h1>
+        </div>
         <div v-else class="flex flex-col gap-4">
             <CardLogActivity v-for="(activity, index) in activityData" :key="index" :activity="activity.activity"
                 :time="activity.time" :date="activity.date" :status="activity.location" />

@@ -3,6 +3,6 @@ import type { Pagination } from "./Pagination";
 export type BaseResponse<T> = {
     data: T;
     paginationData?: Pagination;
-    status_code: number;
+    statusCode: number;
     message: string;
 };
