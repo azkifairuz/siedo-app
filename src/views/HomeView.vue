@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import CardLearningSchedule from '@/components/CardLearningSchedule.vue'
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import type { Profile } from '@/type/Profile';
 import { useUser } from '@/stores/useProfile';
-import {  getFormattedDate } from "@/utils/formateDate";
+import { getFormattedDate } from "@/utils/formateDate";
 import getTimeOfDay from '@/utils/sayHelo';
+import { usePresensi } from '@/stores/usePresensi';
+import { useRouter } from 'vue-router';
+import AlertDialog from '@/components/AlertDialog.vue';
+
 const profile = reactive<Profile>({
   nidn: "",
   nama: "",
@@ -21,25 +25,43 @@ const profile = reactive<Profile>({
 const profileStore = useUser();
 const greetings = getTimeOfDay()
 const token = localStorage.getItem('token');
+const presensiStore = usePresensi()
+const router = useRouter()
+const alertMessage = ref("");
+const show = ref(false);
 
 async function getProfile() {
   if (token) {
-   await profileStore.getProfile(token);
+    await profileStore.getProfile(token);
     if (profileStore.profile) {
       Object.assign(profile, profileStore.profile);
-      console.log(profile);
     }
   }
 }
 const dateNow = getFormattedDate()
 
+
 onMounted(() => {
   getProfile()
 })
 
-function hanldePresensi() {
-  console.log("presensi");
+async function hanldePresensi() {
+  if (!presensiStore.isActive) {
+      router.push({ name: "presensi" })
+  }else {
+    alertMessage.value = `${presensiStore.message}`
+    show.value = false;
+    setTimeout(() => {
+        show.value = true;
+    }, 10);
+    setTimeout(() => {
+        show.value = false;
+    }, 5000);
+
+  }
 }
+
+
 </script>
 
 <template>
@@ -53,9 +75,10 @@ function hanldePresensi() {
       </div>
     </div>
     <div class="relative">
-      <div class="bg-surface mx-6  flex flex-col gap-6 shadow-custom-card z-50 relative rounded-[12px] py-3 px-6">
+      <div class="bg-surface mx-6 gap-2 flex flex-col shadow-custom-card z-50 relative rounded-[12px] py-3 px-6">
         <h1 class="text-main-blue  text-[14px] font-semibold">{{ dateNow }}</h1>
-        <PrimaryButton text="Presensi" color="bg-main-blue" @clickable="hanldePresensi" text-color="text-white"
+        <h1 class="text-[32px] font-semibold text-main-blue text-center">{{ presensiStore.time }}</h1>
+        <PrimaryButton :text="presensiStore.isActive? 'Checkout' : 'Presensi' " color="bg-main-blue" @clickable="hanldePresensi" text-color="text-white"
           :is-disable=false width="w-full" />
       </div>
       <div class="min-h-svh rounded-t-[24px] p-6  mt-[-32px] bg-[#FBFBFB] z-0 relative">
@@ -78,4 +101,6 @@ function hanldePresensi() {
       </div>
     </div>
   </main>
+  <AlertDialog v-show="show" :message="alertMessage" :duration="5000" />
+
 </template>

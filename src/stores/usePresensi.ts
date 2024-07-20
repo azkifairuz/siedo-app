@@ -9,8 +9,9 @@ export const usePresensi = defineStore("presensi", {
     message: "",
     error: false,
     isLoading: false,
-    time: ""
+    time: "",
   }),
+  persist: true,
 
   actions: {
     async checkInOffline(inLocation: boolean) {
@@ -29,16 +30,19 @@ export const usePresensi = defineStore("presensi", {
             },
           }
         );
-          this.isActive = true;
-          this.message = response.data.message;
-          if (response.data.statusCode !== 200) {
-            this.error = true
-          }
-          if (response.data.time) {
-            const parseTime = response.data.time.split('.')
-            this.time = `${parseTime[0]}.${parseTime[1]}`
-          }
-          
+        this.isActive = true;
+        this.message = response.data.message;
+
+        if (response.data.statusCode !== 200) {
+          this.error = true;
+        } else {
+          this.error = false;
+        }
+
+        if (response.data.time) {
+          const parseTime = response.data.time.split(".");
+          this.time = `${parseTime[0]}.${parseTime[1]}`;
+        }
       } catch (error) {
         this.error = true;
         this.message = `error: ${error}`;
@@ -61,16 +65,18 @@ export const usePresensi = defineStore("presensi", {
             },
           }
         );
-          this.isActive = true;
-          this.message = response.data.message;
+        this.isActive = true;
+        this.message = response.data.message;
+        this.error = false;
+        if (response.data.statusCode !== 200) {
+          this.error = true;
+        } else {
           this.error = false;
-          if (response.data.statusCode !== 200) {
-            this.error = true
-          }
-          if (response.data.time) {
-            const parseTime = response.data.time.split('.')
-            this.time = `${parseTime[0]}.${parseTime[1]}`
-          }
+        }
+        if (response.data.time) {
+          const parseTime = response.data.time.split(".");
+          this.time = `${parseTime[0]}.${parseTime[1]}`;
+        }
       } catch (error) {
         this.error = true;
         this.message = `error: ${error}`;
@@ -79,7 +85,7 @@ export const usePresensi = defineStore("presensi", {
       }
     },
 
-    async checout() {
+    async checkout() {
       this.isLoading = true;
       const token = getToken();
       try {
@@ -92,16 +98,18 @@ export const usePresensi = defineStore("presensi", {
             },
           }
         );
-          this.isActive = false;
-          this.message = response.data.message;
+        this.isActive = false;
+        this.message = response.data.message;
+        this.error = false;
+        if (response.data.statusCode !== 200) {
+          this.error = true;
+        } else {
           this.error = false;
-          if (response.data.statusCode !== 200) {
-            this.error = true
-          }
-          if (response.data.time) {
-            const parseTime = response.data.time.split('.')
-            this.time = `${parseTime[0]}.${parseTime[1]}`
-          }
+        }
+        if (response.data.time) {
+          const parseTime = response.data.time.split(".");
+          this.time = `${parseTime[0]}.${parseTime[1]}`;
+        }
       } catch (error) {
         this.error = true;
         this.message = `error: ${error}`;

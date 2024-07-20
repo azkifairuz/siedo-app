@@ -15,7 +15,7 @@ const goBack = () => {
 </script>
 
 <template>
-    <div class="p-6 bg-surface flex gap-4  items-center">
+    <div class="p-6 fixed left-0 right-0  top-0 bg-surface flex gap-4  items-center">
         <button @click="goBack">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9.57 5.92999L3.5 12L9.57 18.07" stroke="#112A46" stroke-width="1.5" stroke-miterlimit="10"

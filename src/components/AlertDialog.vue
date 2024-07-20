@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
       <div v-if="visible"
-           class="fixed bottom-4 left-4 right-4 bg-main-blue text-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4">
+           class="fixed bottom-4 z-50 left-4 right-4 bg-main-blue text-white rounded-lg shadow-lg p-4 flex justify-between items-center gap-4">
         <span>{{ message }}</span>
         <button @click="closeDialog" class="bg-red-500 text-white px-3 py-1 rounded">
           Close
