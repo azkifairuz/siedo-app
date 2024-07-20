@@ -9,6 +9,7 @@ export const useSignIn = defineStore("auth", {
     token: "",
     message: "",
   }),
+  persist:true,
 
   actions: {
     async signIn(username: string, password: string) {

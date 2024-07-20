@@ -24,7 +24,7 @@ function handleOpen() {
 </script>
 <template>
     <div class="flex flex-col gap-1.5 relative">
-        <label :for="label">{{ label }}</label>
+        <label class="text-[16px] text-[#6D839B]" :for="label">{{ label }}</label>
         <div class="relative">
             <input class="rounded-lg py-2 pl-3 pr-10 focus:outline-main-blue outline-1 outline outline-[#ABB8C7] w-full"
                 :id="label" :type="isOpen ? 'text' : 'password'" :placeholder="placeholder" :value="modelValue"

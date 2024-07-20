@@ -49,6 +49,7 @@ async function hanldePresensi() {
   if (!presensiStore.isActive) {
       router.push({ name: "presensi" })
   }else {
+    await presensiStore.checkout()
     alertMessage.value = `${presensiStore.message}`
     show.value = false;
     setTimeout(() => {

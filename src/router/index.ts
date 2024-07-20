@@ -5,6 +5,9 @@ import BaseLayout from '@/views/BaseLayout.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import ActivityView from '@/views/ActivityView.vue'
 import PresensiView from '@/views/presensi/PresensiView.vue'
+import { useSignIn } from '@/stores/useSignIn'
+import { usePresensi } from '@/stores/usePresensi'
+import IzinView from '@/views/presensi/IzinView.vue'
 
 
 const router = createRouter({
@@ -15,6 +18,7 @@ const router = createRouter({
       name: 'base',
       redirect: 'home',
       component: BaseLayout,
+      meta: { requiresAuth: true },
       children:[
         {
           path:'/home',
@@ -37,6 +41,13 @@ const router = createRouter({
       path: '/presensi',
       name: 'presensi',
       component: PresensiView,
+      meta: { requiresAuth: true,alreadyPresensi:true },
+    },
+    {
+      path: '/izin',
+      name: 'izin',
+      component: IzinView,
+      meta: { requiresAuth: true,alreadyPresensi:true },
     },
     {
       path: '/login',
@@ -50,5 +61,21 @@ const router = createRouter({
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  const authStore = useSignIn();
+  if (to.matched.some(record => record.meta.requiresAuth) && !authStore.isAuthenticated) {
+    next({ name: 'login' });
+  } else {
+    next();
+  }
+});
+router.beforeEach((to, from, next) => {
+  const presensiStore = usePresensi();
+  if (to.matched.some(record => record.meta.alreadyPresensi) && presensiStore.isActive) {
+    next({ name: 'home' });
+  } else {
+    next();
+  }
+});
 
 export default router

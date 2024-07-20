@@ -107,8 +107,7 @@ export const usePresensi = defineStore("presensi", {
           this.error = false;
         }
         if (response.data.time) {
-          const parseTime = response.data.time.split(".");
-          this.time = `${parseTime[0]}.${parseTime[1]}`;
+          this.time = ""
         }
       } catch (error) {
         this.error = true;

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import BaseInputField from '@/components/BaseInpuField.vue'
-import { computed, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import PasswordInputField from '@/components/PasswordInputField.vue';
 import Btn from '@/components/PrimaryButton.vue';
 import AlertDialog from '@/components/AlertDialog.vue';
 import { useSignIn } from '@/stores/useSignIn';
+import { useRouter } from 'vue-router';
 
 const login = reactive({
   nidn: "",
@@ -13,6 +14,7 @@ const login = reactive({
 const show = ref(false);
 const alertMessage = ref("");
 const authStore = useSignIn();
+const router = useRouter()
 async function handleLogin() {
   try {
     await authStore.signIn(login.nidn, login.password)
@@ -20,6 +22,7 @@ async function handleLogin() {
       localStorage.setItem('token', authStore.token);
       localStorage.setItem('userid', authStore.user);
       alertMessage.value = `${authStore.message}`;
+      router.push({name:'home'})
     }else{
       alertMessage.value = authStore.message || "Login failed!";
     }
@@ -38,6 +41,17 @@ const isDisable = computed(() => {
   return !login.nidn || !login.password
 })
 
+
+onMounted(()=>{
+  if (!authStore.isAuthenticated) {
+    alertMessage.value = "Anda belum melakukan login!";
+    show.value = true;
+    setTimeout(() => {
+      show.value = false;
+    }, 5000);
+  }
+
+})
 
 
 </script>
