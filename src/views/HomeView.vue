@@ -5,6 +5,7 @@ import { onMounted, reactive } from 'vue';
 import type { Profile } from '@/type/Profile';
 import { useUser } from '@/stores/useProfile';
 import {  getFormattedDate } from "@/utils/formateDate";
+import getTimeOfDay from '@/utils/sayHelo';
 const profile = reactive<Profile>({
   nidn: "",
   nama: "",
@@ -18,7 +19,7 @@ const profile = reactive<Profile>({
 })
 
 const profileStore = useUser();
-
+const greetings = getTimeOfDay()
 const token = localStorage.getItem('token');
 
 async function getProfile() {
@@ -45,7 +46,7 @@ function hanldePresensi() {
   <main class="min-h-svh flex flex-col w-100  bg-main-blue">
     <div class="flex justify-between p-6 items-center">
       <div>
-        <p class="text-[16px] text-white">Selamat pagi,</p>
+        <p class="text-[16px] text-white">Selamat {{ greetings }},</p>
         <h1 class="text-white text-[24px] font-semibold">{{ profile.nama }}</h1>
       </div>
       <div class="w-[80px] h-[80px] flex-shrink-0 bg-gray-400 rounded-[80px]">

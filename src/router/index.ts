@@ -4,6 +4,8 @@ import LoginView from '@/views/LoginView.vue'
 import BaseLayout from '@/views/BaseLayout.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import ActivityView from '@/views/ActivityView.vue'
+import PresensiView from '@/views/presensi/PresensiView.vue'
+import PresensiStart from '@/views/presensi/StepOne.vue'
 
 
 
@@ -19,7 +21,7 @@ const router = createRouter({
         {
           path:'/home',
           name: 'home',
-          component: HomeView
+          component: HomeView,
         },
         {
           path:'/activity',
@@ -31,6 +33,26 @@ const router = createRouter({
           name: 'profile',
           component: ProfileView
         },
+      ]
+    },
+    {
+      path: '/presensi',
+      name: 'presensi',
+      component: PresensiView,
+      redirect: {
+        name:'presensi-start'
+      },
+      children:[
+        {
+          path: '/presensi/start',
+          name: 'presensi-start',
+          component: PresensiStart
+        },
+        {
+          path: '/presensi/success',
+          name: 'presensi-success',
+          component: PresensiView
+        }
       ]
     },
     {
