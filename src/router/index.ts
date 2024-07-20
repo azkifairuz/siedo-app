@@ -6,7 +6,7 @@ import ProfileView from '@/views/ProfileView.vue'
 import ActivityView from '@/views/ActivityView.vue'
 import PresensiView from '@/views/presensi/PresensiView.vue'
 import PresensiStart from '@/views/presensi/StepOne.vue'
-
+import PresensiEnd from '@/views/presensi/StepTwo.vue'
 
 
 const router = createRouter({
@@ -49,9 +49,9 @@ const router = createRouter({
           component: PresensiStart
         },
         {
-          path: '/presensi/success',
-          name: 'presensi-success',
-          component: PresensiView
+          path: '/presensi/end',
+          name: 'presensi-end',
+          component: PresensiEnd
         }
       ]
     },
