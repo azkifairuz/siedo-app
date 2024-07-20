@@ -32,6 +32,22 @@ async function checkInOffline() {
         router.push({ name: 'presensi-end' });
     }
 }
+async function checkinOnline() {
+    await presensiStore.checkInOnline()
+    alertMessage.value = `${presensiStore.message}`
+    show.value = false; 
+    setTimeout(() => {
+        show.value = true;
+    }, 10); 
+    setTimeout(() => {
+        show.value = false;
+    }, 5000); 
+    console.log(presensiStore.error);
+    
+    if (!presensiStore.error) {
+        router.push({ name: 'presensi-end' });
+    }
+}
 </script>
 <template>
     <LoadingPage v-if="presensiStore.isLoading" />
@@ -40,11 +56,11 @@ async function checkInOffline() {
             :text="`Selamat ${timeOfDay}! Dimana anda akan bekerja hari ini`" />
         <div class="flex flex-col gap-3 w-full">
             <PrimaryButton @clickable="checkInOffline" color="bg-main-blue hover:bg-secondary"
-                text-color=" text-white hover:text-black" :is-disable="false" text="Di kampus" width="w-full" />
-            <PrimaryButton color="bg-surface"
+                text-color=" text-white hover:text-black" :is-disable="presensiStore.isLoading" text="Di kampus" width="w-full" />
+            <PrimaryButton @clickable="checkinOnline" color="bg-surface"
                 text-color=" text-main-blue  border-2 hover:text-surface hover:bg-main-blue border-main-blue"
-                :is-disable="false" text="Dari rumah" width="w-full" />
-            <PrimaryButton color="bg-main-yellow" text-color="text-main-blue" :is-disable="false" text="izin"
+                :is-disable="presensiStore.isLoading" text="Dari rumah" width="w-full" />
+            <PrimaryButton color="bg-main-yellow" text-color="text-main-blue" :is-disable="presensiStore.isLoading" text="izin"
                 width="w-full" />
         </div>
         <AlertDialog v-if="show" :message="alertMessage" :duration="5000" />

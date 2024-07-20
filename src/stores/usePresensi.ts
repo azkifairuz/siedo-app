@@ -61,14 +61,16 @@ export const usePresensi = defineStore("presensi", {
             },
           }
         );
-        if (response.data.statusCode) {
           this.isActive = true;
           this.message = response.data.message;
           this.error = false;
-        } else {
-          this.error = true;
-          this.message = response.data.message;
-        }
+          if (response.data.statusCode !== 200) {
+            this.error = true
+          }
+          if (response.data.time) {
+            const parseTime = response.data.time.split('.')
+            this.time = `${parseTime[0]}.${parseTime[1]}`
+          }
       } catch (error) {
         this.error = true;
         this.message = `error: ${error}`;
@@ -90,14 +92,16 @@ export const usePresensi = defineStore("presensi", {
             },
           }
         );
-        if (response.data.statusCode) {
           this.isActive = false;
           this.message = response.data.message;
           this.error = false;
-        } else {
-          this.error = true;
-          this.message = response.data.message;
-        }
+          if (response.data.statusCode !== 200) {
+            this.error = true
+          }
+          if (response.data.time) {
+            const parseTime = response.data.time.split('.')
+            this.time = `${parseTime[0]}.${parseTime[1]}`
+          }
       } catch (error) {
         this.error = true;
         this.message = `error: ${error}`;
