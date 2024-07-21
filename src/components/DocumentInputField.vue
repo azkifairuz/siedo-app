@@ -37,7 +37,7 @@ const handleFileUpload = (event: Event) => {
         <label class=" text-[#6D839B] text-[16px] " for="file-upload">
             {{ label }}
         </label>
-        <div class="border border-[#ABB8C7] mt-1.5 h-[290px] rounded-lg  flex justify-center items-center " >
+        <div class="outline-1 outline outline-[#ABB8C7] hover:outline-main-blue focus:outline-main-blue mt-1.5 h-[290px] rounded-lg  flex justify-center items-center " >
             <input type="file" id="file-upload" ref="fileInput" class="hidden" @change="handleFileUpload" />
             <div @click="triggerFileInput" class="cursor-pointer flex flex-col justify-center items-center text-center">
                 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,8 +65,5 @@ const handleFileUpload = (event: Event) => {
 </template>
 
 <style scoped>
-.cursor-pointer:hover {
-    color: #1D4ED8;
-    /* Change color on hover */
-}
+
 </style>

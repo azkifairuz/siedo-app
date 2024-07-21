@@ -35,7 +35,7 @@ const color = computed(() => getColor(props.status));
             <h2 class="text-base font-semibold">{{ parseTime[0] }}.{{ parseTime[1] }} WIB</h2>
         </div>
    
-        <div class="text-main-blue items-end lex-1 flex  justify-between flex-col gap-1">
+        <div class="text-main-blue  items-end lex-1 flex  justify-between flex-col gap-1">
             <h1 class="text-[14px] font-medium ">{{ date }}</h1>
             <Chip :text="status" :color="color" />
         </div>

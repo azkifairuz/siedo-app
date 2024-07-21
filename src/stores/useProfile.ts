@@ -9,8 +9,9 @@ export const useUser = defineStore("profile", {
     error: false,
     massage: "",
     isLoading: false,
+    isAlreadyPresensi: false,
   }),
-
+  persist: true,
   actions: {
     async getProfile(token: string) {
       this.isLoading = true;
@@ -27,6 +28,7 @@ export const useUser = defineStore("profile", {
         if (response.data.data) {
           this.profile = response.data.data;
           this.massage = response.data.message;
+          this.isAlreadyPresensi = response.data.data.isAlreadyPresensi;
         } else {
           this.massage = response.data.message;
           this.error = true;
@@ -38,5 +40,8 @@ export const useUser = defineStore("profile", {
         this.isLoading = false;
       }
     },
+    async updateProgile() {
+      
+    }
   },
 });

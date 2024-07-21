@@ -56,6 +56,10 @@ async function checkinOnline() {
     }
 }
 
+
+function absent() {
+    router.push({ name: 'izin' });
+}
 </script>
 <template>
     <div class="min-h-screen  flex flex-col ">
@@ -74,10 +78,10 @@ async function checkinOnline() {
                     <PrimaryButton @clickable="checkinOnline" color="bg-surface"
                         text-color=" text-main-blue  border-2 hover:text-surface hover:bg-main-blue border-main-blue"
                         :is-disable="presensiStore.isLoading" text="Dari rumah" width="w-full" />
-                    <PrimaryButton color="bg-main-yellow" text-color="text-main-blue"
+                    <PrimaryButton @clickable="absent" color="bg-main-yellow" text-color="text-main-blue"
                         :is-disable="presensiStore.isLoading" text="izin" width="w-full" />
                 </div>
-                <AlertDialog v-show="show" :message="alertMessage" :duration="5000" />
+                <AlertDialog v-if="show" :message="alertMessage" :duration="5000" />
             </div>
         </main>
     </div>

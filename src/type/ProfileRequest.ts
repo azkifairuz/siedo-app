@@ -1,5 +1,4 @@
-export type Profile = {
-    nidn: string;
+export type ProfileRequest = {
     nama: string;
     programStudi: string;
     jenjangPendidikan: string;
@@ -8,5 +7,4 @@ export type Profile = {
     jabatanAkademik: string;
     noTelephone: string;
     alamatSurel: string;
-    isAlreadyPresensi: boolean;
-};
+}

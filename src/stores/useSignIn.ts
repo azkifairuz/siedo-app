@@ -13,6 +13,8 @@ export const useSignIn = defineStore("auth", {
 
   actions: {
     async signIn(username: string, password: string) {
+      this.isAuthenticated = false;
+
       const response = await axios.post<AuthResponse>(
         `${import.meta.env.VITE_BASE_API}/dosen/auth`,
         {

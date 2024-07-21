@@ -20,6 +20,7 @@ const profile = reactive<Profile>({
   jabatanAkademik: "",
   noTelephone: "",
   alamatSurel: "",
+  isAlreadyPresensi: false
 })
 
 const profileStore = useUser();
@@ -46,18 +47,20 @@ onMounted(() => {
 })
 
 async function hanldePresensi() {
-  if (!presensiStore.isActive) {
-      router.push({ name: "presensi" })
-  }else {
+  if (!profileStore.isAlreadyPresensi) {
+    router.push({ name: "presensi" })
+  } else {
     await presensiStore.checkout()
+    getProfile()
     alertMessage.value = `${presensiStore.message}`
     show.value = false;
     setTimeout(() => {
-        show.value = true;
-    }, 10);
-    setTimeout(() => {
+      show.value = true;
+      setTimeout(() => {
         show.value = false;
-    }, 5000);
+      }, 5000);
+    }, 10);
+    console.log(show);
 
   }
 }
@@ -79,8 +82,8 @@ async function hanldePresensi() {
       <div class="bg-surface mx-6 gap-2 flex flex-col shadow-custom-card z-50 relative rounded-[12px] py-3 px-6">
         <h1 class="text-main-blue  text-[14px] font-semibold">{{ dateNow }}</h1>
         <h1 class="text-[32px] font-semibold text-main-blue text-center">{{ presensiStore.time }}</h1>
-        <PrimaryButton :text="presensiStore.isActive? 'Checkout' : 'Presensi' " color="bg-main-blue" @clickable="hanldePresensi" text-color="text-white"
-          :is-disable=false width="w-full" />
+        <PrimaryButton :text="profileStore.isAlreadyPresensi ? 'Checkout' : 'Presensi'" color="bg-main-blue"
+          @clickable="hanldePresensi" text-color="text-white" :is-disable=false width="w-full" />
       </div>
       <div class="min-h-svh rounded-t-[24px] p-6  mt-[-32px] bg-[#FBFBFB] z-0 relative">
         <section class="jadwal-mengajar-section mt-[57px] ">
@@ -102,6 +105,6 @@ async function hanldePresensi() {
       </div>
     </div>
   </main>
-  <AlertDialog v-show="show" :message="alertMessage" :duration="5000" />
+  <AlertDialog v-if="show" :message="alertMessage" :duration="5000" />
 
 </template>

@@ -5,7 +5,6 @@ import { defineStore } from "pinia";
 
 export const usePresensi = defineStore("presensi", {
   state: () => ({
-    isActive: false,
     message: "",
     error: false,
     isLoading: false,
@@ -30,7 +29,6 @@ export const usePresensi = defineStore("presensi", {
             },
           }
         );
-        this.isActive = true;
         this.message = response.data.message;
 
         if (response.data.statusCode !== 200) {
@@ -65,7 +63,6 @@ export const usePresensi = defineStore("presensi", {
             },
           }
         );
-        this.isActive = true;
         this.message = response.data.message;
         this.error = false;
         if (response.data.statusCode !== 200) {
@@ -98,7 +95,6 @@ export const usePresensi = defineStore("presensi", {
             },
           }
         );
-        this.isActive = false;
         this.message = response.data.message;
         this.error = false;
         if (response.data.statusCode !== 200) {
@@ -107,7 +103,43 @@ export const usePresensi = defineStore("presensi", {
           this.error = false;
         }
         if (response.data.time) {
-          this.time = ""
+          this.time = "hari ini anda izin";
+        }
+      } catch (error) {
+        this.error = true;
+        this.message = `error: ${error}`;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async izin(reason: string, file: File) {
+      this.isLoading = true;
+      const token = getToken();
+      const formData = new FormData();
+      formData.append("reason", reason);
+      formData.append("document", file);
+      try {
+        const response = await axios.post<BaseResponsePresensi>(
+          `${import.meta.env.VITE_BASE_API}/dosen/presensi/izin`,
+          formData,
+          {
+            headers: {
+              Authorization: token,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        this.message = response.data.message;
+        this.error = false;
+        if (response.data.statusCode !== 200) {
+          this.error = true;
+
+        } else {
+          this.error = false;
+        }
+        if (response.data.time) {
+          this.time = "";
         }
       } catch (error) {
         this.error = true;

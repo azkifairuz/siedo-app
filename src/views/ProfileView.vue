@@ -11,6 +11,8 @@ import type { Jurnal } from '@/type/Jurnal';
 import type { Pkm } from '@/type/Pkm';
 import { usePkm } from '@/stores/usePkm';
 import LoadingPage from '@/components/LoadingPage.vue';
+import ImageWithBottomText from '@/components/ImageWithBottomText.vue';
+import empyImg from '@/assets/img/empty.png'
 const profile = reactive<Profile>({
   nidn: "",
   nama: "",
@@ -21,6 +23,7 @@ const profile = reactive<Profile>({
   jabatanAkademik: "",
   noTelephone: "",
   alamatSurel: "",
+  isAlreadyPresensi: false
 })
 
 const jurnal = ref<Jurnal[]>([])
@@ -34,40 +37,40 @@ const token = getToken()
 const isLoading = ref<boolean>(false)
 async function getProfile() {
   isLoading.value = true
- try {
-  if (token) {
-    await profileStore.getProfile(token);
-    if (profileStore.profile) {
+  try {
+    if (token) {
+      if (!profileStore.profile) {
+        await profileStore.getProfile(token);
+      }
       Object.assign(profile, profileStore.profile);
     }
-  }
 
-  await jurnalStore.getAllJurnal()
-  if (jurnalStore.jurnal) {
-    jurnal.value = jurnalStore.jurnal.slice(0, 2)
+    if (jurnalStore.jurnal.length < 1) {
+      await jurnalStore.getAllJurnal()
+    }
+    jurnal.value = jurnalStore.jurnal
+    if (pkmStore.pkm.length < 1) {
+      await pkmStore.getAllPkm()
+    }
+    pkm.value = pkmStore.pkm
+  } catch (error) {
+    console.log(error);
+
+  } finally {
+    isLoading.value = false
   }
-  await pkmStore.getAllPkm()
-  if (jurnalStore.jurnal) {
-    pkm.value = pkmStore.pkm.slice(0, 2)
-  }
- } catch (error) {
-  console.log(error);
-  
- }finally{
-  isLoading.value =false
- }
 }
 
 onMounted(() => {
   getProfile()
 })
-async function hanldePresensi() {
+async function edit() {
 
 }
 
 </script>
 <template>
-  <LoadingPage v-if="isLoading"/>
+  <LoadingPage v-if="isLoading" />
   <main v-else class="min-h-svh flex flex-col w-100  bg-main-blue">
     <div class="flex  p-6 items-center justify-center">
       <p class="text-[20px] text-center flex-1 text-white">Profile dosen</p>
@@ -87,8 +90,8 @@ async function hanldePresensi() {
             <p class="text-[12px]">{{ profile.programStudi }}</p>
           </div>
         </div>
-        <PrimaryButton text="Edit" color="bg-main-blue" @clickable="hanldePresensi" text-color="text-white"
-          :is-disable=false width="w-full" />
+        <PrimaryButton text="Edit" color="bg-main-blue" @clickable="edit" text-color="text-white" :is-disable=false
+          width="w-full" />
       </div>
       <div class="min-h-svh rounded-t-[24px] p-6  mt-[-62px] bg-[#FBFBFB] z-0 relative">
         <section class="mt-[62px] ">
@@ -107,45 +110,63 @@ async function hanldePresensi() {
             </CardProfile>
             <CardProfile title="Biodata">
               <template v-slot:body>
-                <div class="flex flex-col gap-6">
+                <div v-if="jurnal.length > 0">
+                  <div class="flex flex-col gap-6">
 
-                  <div v-for="item in jurnal" :key="item.id"
-                    class="text-[14px] border-black  text-main-blue flex flex-col gap-1">
-                    <h1 class="text-xs font-medium">{{ item.judulArtikel }}</h1>
-                    <p class="text-xs text-main-blue">{{ item.namaJurnal }}</p>
-                    <p class="text-main-blue text-[10px] font-light">Volume {{ item.volume }}, No {{ item.nomor }}, hal
-                      {{
-                        item.halaman }},ISSN: {{ item.issn }}, {{ item.tanggalTerbit }}</p>
-                    <div class="w-full flex justify-between items-center">
-                      <a class="text-[#087BFB] text-[10px] font-light" :href="item.tautanLamanJurnal">Link Jurnal</a>
-                      <p class="text-main-blue text-xs cursor-pointer font-medium">selengkapnya</p>
+                    <div v-for="item in jurnal" :key="item.id"
+                      class="text-[14px] border-black  text-main-blue flex flex-col gap-1">
+                      <h1 class="text-xs font-medium">{{ item.judulArtikel }}</h1>
+                      <p class="text-xs text-main-blue">{{ item.namaJurnal }}</p>
+                      <p class="text-main-blue text-[10px] font-light">Volume {{ item.volume }}, No {{ item.nomor }},
+                        hal
+                        {{
+                          item.halaman }},ISSN: {{ item.issn }}, {{ item.tanggalTerbit }}</p>
+                      <div class="w-full flex justify-between items-center">
+                        <a class="text-[#087BFB] text-[10px] font-light" :href="item.tautanLamanJurnal">Link Jurnal</a>
+                        <p class="text-main-blue text-xs cursor-pointer font-medium">edit</p>
+                      </div>
                     </div>
                   </div>
+                  <h1 class="text-[12px] mt-4 text-center cursor-pointer text-main-blue font-semibold">Lihat seluruh
+                    jurnal anda</h1>
                 </div>
-                <h1 class="text-[12px] mt-4 text-center cursor-pointer text-main-blue font-semibold">Lihat seluruh
-                  jurnal anda</h1>
+                <div v-else class="w-full flex flex-col justify-center items-center">
+                  <div class="w-[100px]">
+                    <img :src="empyImg" alt="">
+                  </div>
+                  <p class="text-center font-quicksand text-[14px] text-main-blue">belum ada pengabdian masyarakat</p>
+                </div>
               </template>
             </CardProfile>
 
             <CardProfile title="Pengabdian Masyarakat">
               <template v-slot:body>
-                <div class="flex flex-col gap-6">
+                <div v-if="jurnal.length > 0">
 
-                  <div v-for="item in pkm" :key="item.id"
-                    class="text-[14px] border-black  text-main-blue flex flex-col gap-1">
-                    <h1 class="text-xs font-medium">{{ item.judul }}</h1>
-                    <p class="text-xs text-main-blue">{{ item.lokasiKegiatan }}</p>
-                    <p class="text-main-blue text-[10px] font-light">{{ item.nomorSkPengesahan }}</p>
-                    <div class="w-full flex gap-2 items-center">
-                      <p class="text-main-blue text-[10px]">{{item.lamaKegiatan}}</p>
-                      <p class="text-main-blue text-[10px]">{{item.tahunPelaksanaan}}</p>
+                  <div class="flex flex-col gap-6">
+
+                    <div v-for="item in pkm" :key="item.id"
+                      class="text-[14px] border-black  text-main-blue flex flex-col gap-1">
+                      <h1 class="text-xs font-medium">{{ item.judul }}</h1>
+                      <p class="text-xs text-main-blue">{{ item.lokasiKegiatan }}</p>
+                      <p class="text-main-blue text-[10px] font-light">{{ item.nomorSkPengesahan }}</p>
+                      <div class="w-full flex gap-2 items-center">
+                        <p class="text-main-blue text-[10px]">{{ item.lamaKegiatan }}</p>
+                        <p class="text-main-blue text-[10px]">{{ item.tahunPelaksanaan }}</p>
+                      </div>
+                      <p class="text-main-blue text-xs text-end cursor-pointer font-medium">edit</p>
+
                     </div>
-                    <p class="text-main-blue text-xs text-end cursor-pointer font-medium">selengkapnya</p>
-
                   </div>
+                  <h1 class="text-[12px] mt-4 text-center cursor-pointer text-main-blue font-semibold">Lihat seluruh
+                    pengabdian anda anda</h1>
                 </div>
-                <h1 class="text-[12px] mt-4 text-center cursor-pointer text-main-blue font-semibold">Lihat seluruh
-                  pengabdian anda anda</h1>
+                <div v-else class="w-full flex flex-col justify-center items-center">
+                  <div class="w-[100px]">
+                    <img :src="empyImg" alt="">
+                  </div>
+                  <p class="text-center font-quicksand text-[14px] text-main-blue">belum ada pengabdian masyarakat</p>
+                </div>
               </template>
             </CardProfile>
           </div>

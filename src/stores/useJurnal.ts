@@ -12,6 +12,7 @@ export const useJurnal = defineStore("jurnal", {
     error: false,
     message: "",
   }),
+
   actions: {
     async getAllJurnal() {
       const token = getToken();
