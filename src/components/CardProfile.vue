@@ -1,14 +1,21 @@
 <script setup lang="ts">
-  defineProps<{
-        title:string,
+defineProps<{
+    title: string,
 
-    }>()
+}>()
+const emits = defineEmits(['clickable']);
+
+function onClick() {
+    emits('clickable')
+
+}
+
 </script>
 <template>
     <div class="shadow-custom-card">
         <div class="bg-main-blue text-white p-2 flex justify-between items-center rounded-t-lg">
             <span class="text-[14p] text-white font-semibold">{{ title }}</span>
-            <button class="text-white">
+            <button @click="onClick" class="text-white">
                 <!-- Icon for edit, you can use any icon library here -->
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path

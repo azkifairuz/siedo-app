@@ -33,7 +33,7 @@ const show = ref(false);
 
 async function getProfile() {
   if (token) {
-    await profileStore.getProfile(token);
+    await profileStore.getProfile();
     if (profileStore.profile) {
       Object.assign(profile, profileStore.profile);
     }

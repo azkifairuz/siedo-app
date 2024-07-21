@@ -8,6 +8,8 @@ import PresensiView from "@/views/presensi/PresensiView.vue";
 import { useSignIn } from "@/stores/useSignIn";
 import { useUser } from "@/stores/useProfile";
 import IzinView from "@/views/presensi/IzinView.vue";
+import EditBiodata from "@/views/profile/EditBiodata.vue";
+import EditProfile from "@/views/profile/EditProfile.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -47,6 +49,18 @@ const router = createRouter({
       name: "izin",
       component: IzinView,
       meta: { requiresAuth: true, alreadyPresensi: true },
+    },
+    {
+      path: "/profile/edit",
+      name: "edit-profile",
+      component: EditProfile,
+      meta: { requiresAuth: true},
+    },
+    {
+      path: "/profile/biodata",
+      name: "edit-biodata",
+      component: EditBiodata,
+      meta: { requiresAuth: true},
     },
     {
       path: "/login",
