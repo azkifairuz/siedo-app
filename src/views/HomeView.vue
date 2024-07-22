@@ -2,13 +2,14 @@
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import CardLearningSchedule from '@/components/CardLearningSchedule.vue'
 import { onMounted, reactive, ref } from 'vue';
-import type { Profile } from '@/type/Profile';
+import type { Profile, WorkTime } from '@/type/Profile';
 import { useUser } from '@/stores/useProfile';
 import { getFormattedDate } from "@/utils/formateDate";
 import getTimeOfDay from '@/utils/sayHelo';
 import { usePresensi } from '@/stores/usePresensi';
 import { useRouter } from 'vue-router';
 import AlertDialog from '@/components/AlertDialog.vue';
+import CardRecap from '@/components/CardRecap.vue';
 
 const profile = reactive<Profile>({
   nidn: "",
@@ -20,8 +21,12 @@ const profile = reactive<Profile>({
   jabatanAkademik: "",
   noTelephone: "",
   alamatSurel: "",
-  isAlreadyPresensi: false
+  isAlreadyPresensi: false,
+  statusThridarma: "",
+  kerajinanDosen: ""
 })
+
+const workTime = ref<WorkTime[]>([])
 
 const profileStore = useUser();
 const greetings = getTimeOfDay()
@@ -34,8 +39,10 @@ const show = ref(false);
 async function getProfile() {
   if (token) {
     await profileStore.getProfile();
+    await profileStore.getWeeklyReport();
     if (profileStore.profile) {
       Object.assign(profile, profileStore.profile);
+      workTime.value = profileStore.weeklyReport
     }
   }
 }
@@ -100,6 +107,18 @@ async function hanldePresensi() {
               room="2Ti03" />
             <CardLearningSchedule day="Jumat" semester="ganjil" year="2023/2024" subject="Pemrograman Dasar"
               room="2Ti03" />
+          </div>
+        </section>
+        <section class="jadwal-mengajar-section mt-[57px] ">
+          <div class="w-full flex justify-between items-center mb-6 cursor-pointer">
+            <h1 class="text-[16px] font-bold">Rekap Jam Kerja</h1>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6.6825 14.94L11.5725 10.05C12.15 9.4725 12.15 8.5275 11.5725 7.95L6.6825 3.06" stroke="#112A46"
+                stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div v-for="(item,index) in workTime" :key="index" class="flex flex-col gap-3">
+            <CardRecap :periode="item.period" :work-hour="item.totalTime" :status="item.performance" />
           </div>
         </section>
       </div>

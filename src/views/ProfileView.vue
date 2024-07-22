@@ -14,6 +14,7 @@ import LoadingPage from '@/components/LoadingPage.vue';
 import empyImg from '@/assets/img/empty.png'
 import dumy from '@/assets/img/dumy_image.png'
 import { useRouter } from 'vue-router';
+import Chip from '@/components/Chip.vue';
 const profile = reactive<Profile>({
   nidn: "",
   nama: "",
@@ -24,7 +25,9 @@ const profile = reactive<Profile>({
   jabatanAkademik: "",
   noTelephone: "",
   alamatSurel: "",
-  isAlreadyPresensi: false
+  isAlreadyPresensi: false,
+  statusThridarma: "",
+  kerajinanDosen: ""
 })
 
 const jurnal = ref<Jurnal[]>([])
@@ -94,12 +97,15 @@ function goToPkm() {
     <div class="relative">
       <div class="bg-surface mx-6  flex flex-col gap-6 shadow-custom-card z-50 relative rounded-[12px] p-3">
         <div class="flex gap-3 items-center ">
-          <img :src="dumy" class="w-[80px] h-[80px] flex-shrink-0 bg-gray-400 rounded-[80px]">
+          <img :src="dumy" class="w-[80px] h-[80px]  flex-shrink-0 bg-gray-400 rounded-[80px]">
           </img>
           <div class="text-main-blue">
             <p class="text-[12px] mb-2">Semester Ganjil 2023</p>
             <p class="text-[16px] font-semibold text-main-blue">{{ profile.nama }}</p>
             <p class="text-[12px]">{{ profile.nidn }}</p>
+            <p class="text-[12px] mb-1">{{ profile.programStudi }}</p>
+            <Chip :text="profile.statusThridarma + ' Thridarma'" color="main-safe w-full capitalize" /> 
+
           </div>
         </div>
         <PrimaryButton text="Edit" color="bg-main-blue" @clickable="edit" text-color="text-white" :is-disable=false
@@ -139,8 +145,7 @@ function goToPkm() {
                       </div>
                     </div>
                   </div>
-                  <!-- <h1 class="text-[12px] mt-4 text-center cursor-pointer text-main-blue font-semibold">Lihat seluruh
-                    jurnal anda</h1> -->
+                
                 </div>
                 <div v-else class="w-full flex flex-col justify-center items-center">
                   <div class="w-[100px]">

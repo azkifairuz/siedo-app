@@ -1,5 +1,5 @@
 import type { BaseResponse } from "@/type/BaseResponse";
-import type { Profile } from "@/type/Profile";
+import type { Profile, WorkTime } from "@/type/Profile";
 import type { ProfileRequest } from "@/type/ProfileRequest";
 import { getToken } from "@/utils/getToken";
 import axios from "axios";
@@ -12,6 +12,7 @@ export const useUser = defineStore("profile", {
     massage: "",
     isLoading: false,
     isAlreadyPresensi: false,
+    weeklyReport: [] as WorkTime[],
   }),
   actions: {
     async getProfile() {
@@ -55,12 +56,40 @@ export const useUser = defineStore("profile", {
             },
           }
         );
-        
+
         if (response.data.statusCode != 200) {
           this.massage = response.data.message;
-          this.error = true
+          this.error = true;
         }
-        this.error = false
+        this.error = false;
+        this.massage = response.data.message;
+      } catch (error) {
+        this.error = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async getWeeklyReport() {
+      try {
+        const token = getToken();
+        const response = await axios.get<BaseResponse<WorkTime[]>>(
+          `${import.meta.env.VITE_BASE_API}/dosen/presensi/weekly-recap`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+
+        if (response.data.statusCode != 200) {
+         
+          this.massage = response.data.message;
+          this.error = true;
+        }
+        if (response.data.data) {
+          this.weeklyReport = response.data.data;
+        }
+        this.error = false;
         this.massage = response.data.message;
       } catch (error) {
         this.error = false;
@@ -70,8 +99,8 @@ export const useUser = defineStore("profile", {
     },
   },
   persist: {
-    key: 'profile',
+    key: "profile",
     storage: localStorage,
-    paths: ['profile', 'isAlreadyPresensi']
+    paths: ["profile", "isAlreadyPresensi"],
   },
 });

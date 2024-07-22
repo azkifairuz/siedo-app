@@ -66,5 +66,4 @@ onMounted(()=>{
     <h3 class="text-[12px] w-full text-center font-semibold text-main-red">Lupa kata sandi?</h3>
   </div>
   <AlertDialog v-if="show" :message="alertMessage" :duration="5000" />
-
 </template>

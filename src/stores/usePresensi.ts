@@ -103,7 +103,7 @@ export const usePresensi = defineStore("presensi", {
           this.error = false;
         }
         if (response.data.time) {
-          this.time = "hari ini anda izin";
+          this.time = "";
         }
       } catch (error) {
         this.error = true;
@@ -139,7 +139,7 @@ export const usePresensi = defineStore("presensi", {
           this.error = false;
         }
         if (response.data.time) {
-          this.time = "";
+          this.time = "hari anda izin";
         }
       } catch (error) {
         this.error = true;

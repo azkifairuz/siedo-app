@@ -9,4 +9,12 @@ export type Profile = {
     noTelephone: string;
     alamatSurel: string;
     isAlreadyPresensi: boolean;
+    statusThridarma: string;
+    kerajinanDosen:string;
 };
+
+export type WorkTime = {
+    totalTime: string;
+    period:string;
+    performance: string
+}
