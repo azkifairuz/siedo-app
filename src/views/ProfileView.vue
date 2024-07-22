@@ -78,6 +78,9 @@ function biodata() {
 function goToJurnal() {
   router.push({ name: "create-jurnal" })
 }
+function goToPkm() {
+  router.push({ name: "create-pkm" })
+}
 </script>
 <template>
   <LoadingPage v-if="isLoading" />
@@ -148,7 +151,7 @@ function goToJurnal() {
               </template>
             </CardProfile>
 
-            <CardProfile title="Pengabdian Masyarakat">
+            <CardProfile @clickable="goToPkm" title="Pengabdian Masyarakat">
               <template v-slot:body>
                 <div v-if="pkm.length > 0">
 
