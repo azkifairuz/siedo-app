@@ -158,7 +158,7 @@ function goToJurnal() {
                       class="text-[14px] border-b border-main-blue pb-2  text-main-blue flex flex-col gap-1">
                       <h1 class="text-xs font-medium">{{ item.judul }}</h1>
                       <p class="text-xs text-main-blue">{{ item.lokasiKegiatan }}</p>
-                      <p class="text-main-blue text-[10px] font-light">{{ item.nomorSkPengesahan }}</p>
+                      <p class="text-main-blue text-[10px] font-light">SK No. {{ item.nomorSkPengesahan }}</p>
                       <div class="w-full flex gap-2 items-center">
                         <p class="text-main-blue text-[10px]">{{ item.lamaKegiatan }}</p>
                         <p class="text-main-blue text-[10px]">{{ item.tahunPelaksanaan }}</p>

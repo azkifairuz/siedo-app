@@ -11,6 +11,7 @@ export const usePkm = defineStore("pkm", {
     pkm: [] as Pkm[],
     error: false,
     message: "",
+    isLoading: false,
   }),
 
   actions: {
@@ -38,30 +39,38 @@ export const usePkm = defineStore("pkm", {
       }
     },
     async createPkm(request: PkmRequest, file: File) {
-      const token = getToken();
-      const formData = new FormData();
-      formData.append("judul", request.judul);
-      formData.append("tahunPelaksanaan", request.tahunPelaksanaan);
-      formData.append("lamaKegiatan", request.lamaKegiatan);
-      formData.append("lokasiKegiatan", request.lokasiKegiatan);
-      formData.append("nomorSkPengesahan", request.nomorSkPengesahan);
-      formData.append("document", file);
-      const response = await axios.post<BaseResponse<string>>(
-        `${import.meta.env.VITE_BASE_API}/dosen/pkm`,
-        formData,
-        {
-          headers: {
-            Authorization: token,
-            "Content-Type": "multipart/form-data",
-          },
+      this.isLoading = true;
+      try {
+        const token = getToken();
+        const formData = new FormData();
+        formData.append("judul", request.judul);
+        formData.append("tahunPelaksanaan", request.tahunPelaksanaan);
+        formData.append("lamaKegiatan", request.lamaKegiatan);
+        formData.append("lokasiKegiatan", request.lokasiKegiatan);
+        formData.append("nomorSkPengesahan", request.nomorSkPengesahan);
+        formData.append("document", file);
+        const response = await axios.post<BaseResponse<string>>(
+          `${import.meta.env.VITE_BASE_API}/dosen/pkm`,
+          formData,
+          {
+            headers: {
+              Authorization: token,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        if (response.data.statusCode != 200) {
+          this.message = response.data.message;
+          this.error = true;
         }
-      );
-      if (response.data.statusCode != 200) {
+        this.error = false;
         this.message = response.data.message;
+      } catch (error) {
         this.error = true;
+        this.message = `${error}`;
+      } finally {
+        this.isLoading = false;
       }
-      this.error = false;
-      this.message = response.data.message;
     },
   },
 });

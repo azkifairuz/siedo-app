@@ -7,9 +7,7 @@ import LoadingPage from '@/components/LoadingPage.vue';
 import PrimaryButton from '@/components/PrimaryButton.vue';
 import TopAppBar from '@/components/TopAppBar.vue';
 import { useJurnal } from '@/stores/useJurnal';
-import { useUser } from '@/stores/useProfile';
 import type { JurnalRequest } from '@/type/Jurnal';
-import type { ProfileRequest } from '@/type/ProfileRequest';
 import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 const jurnal = reactive<JurnalRequest>(

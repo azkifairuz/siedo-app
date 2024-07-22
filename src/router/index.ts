@@ -11,6 +11,7 @@ import IzinView from "@/views/presensi/IzinView.vue";
 import EditBiodata from "@/views/profile/EditBiodata.vue";
 import EditProfile from "@/views/profile/EditProfile.vue";
 import CreateJurnal from "@/views/profile/CreateJurnal.vue";
+import CreatePkm from "@/views/profile/CreatePkm.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -67,6 +68,12 @@ const router = createRouter({
       path: "/jurnal/create",
       name: "create-jurnal",
       component: CreateJurnal,
+      meta: { requiresAuth: true},
+    },
+    {
+      path: "/pkm/create",
+      name: "create-pkm",
+      component: CreatePkm,
       meta: { requiresAuth: true},
     },
     {

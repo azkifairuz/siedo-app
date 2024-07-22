@@ -40,34 +40,42 @@ export const useJurnal = defineStore("jurnal", {
       }
     },
     async createJurnal(request: JurnalRequest, file: File) {
-      const token = getToken();
-      const formData = new FormData();
-      formData.append("judulArtikel", request.judulArtikel);
-      formData.append("namaJurnal", request.namaJurnal);
-      formData.append("tautanLamanJurnal", request.tautanLamanJurnal);
-      formData.append("tanggalTerbit", request.tanggalTerbit);
-      formData.append("volume", request.volume);
-      formData.append("nomor", request.nomor);
-      formData.append("halaman", request.halaman);
-      formData.append("penerbitPenyelanggara", "-");
-      formData.append("issn", request.issn);
-      formData.append("document", file);
-      const response = await axios.post<BaseResponse<string>>(
-        `${import.meta.env.VITE_BASE_API}/dosen/jurnal`,
-        formData,
-        {
-          headers: {
-            Authorization: token,
-            "Content-Type": "multipart/form-data",
-          },
+      this.isLoading = true
+      try {
+        const token = getToken();
+        const formData = new FormData();
+        formData.append("judulArtikel", request.judulArtikel);
+        formData.append("namaJurnal", request.namaJurnal);
+        formData.append("tautanLamanJurnal", request.tautanLamanJurnal);
+        formData.append("tanggalTerbit", request.tanggalTerbit);
+        formData.append("volume", request.volume);
+        formData.append("nomor", request.nomor);
+        formData.append("halaman", request.halaman);
+        formData.append("penerbitPenyelanggara", "-");
+        formData.append("issn", request.issn);
+        formData.append("document", file);
+        const response = await axios.post<BaseResponse<string>>(
+          `${import.meta.env.VITE_BASE_API}/dosen/jurnal`,
+          formData,
+          {
+            headers: {
+              Authorization: token,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        if (response.data.statusCode != 200) {
+          this.message = response.data.message;
+          this.error = true;
         }
-      );
-      if (response.data.statusCode != 200) {
+        this.error = false;
         this.message = response.data.message;
-        this.error = true;
+      } catch (error) {
+        this.error = false;
+        this.message = `${error}`;
+      }finally{
+        this.isLoading = false
       }
-      this.error = false;
-      this.message = response.data.message;
     },
   },
 });
