@@ -69,13 +69,15 @@ onMounted(() => {
   getProfile()
 
 })
- function edit() {
-  router.push({name:"edit-profile"})
+function edit() {
+  router.push({ name: "edit-profile" })
 }
- function biodata() {
-  router.push({name:"edit-biodata"})
+function biodata() {
+  router.push({ name: "edit-biodata" })
 }
-
+function goToJurnal() {
+  router.push({ name: "create-jurnal" })
+}
 </script>
 <template>
   <LoadingPage v-if="isLoading" />
@@ -109,19 +111,19 @@ onMounted(() => {
                   <p>{{ profile.programStudi }}</p>
                   <p>{{ profile.jenjangPendidikan }}</p>
                   <p>{{ profile.jenisKelamin }}</p>
-                  <p>{{ tnglLahir}}</p>
+                  <p>{{ tnglLahir }}</p>
                   <p>{{ profile.alamatSurel }}</p>
                   <p>{{ profile.noTelephone }}</p>
                 </div>
               </template>
             </CardProfile>
-            <CardProfile @clickable="biodata" title="Biodata">
+            <CardProfile @clickable="goToJurnal" title="Jurnal">
               <template v-slot:body>
                 <div v-if="jurnal.length > 0">
                   <div class="flex flex-col gap-6">
 
-                    <div v-for="item in jurnal" :key="item.id"
-                      class="text-[14px] border-black  text-main-blue flex flex-col gap-1">
+                    <div c v-for="item in jurnal" :key="item.id"
+                      class="text-[14px] border-main-blue pb-2 border-b text-main-blue flex flex-col gap-1">
                       <h1 class="text-xs font-medium">{{ item.judulArtikel }}</h1>
                       <p class="text-xs text-main-blue">{{ item.namaJurnal }}</p>
                       <p class="text-main-blue text-[10px] font-light">Volume {{ item.volume }}, No {{ item.nomor }},
@@ -134,8 +136,8 @@ onMounted(() => {
                       </div>
                     </div>
                   </div>
-                  <h1 class="text-[12px] mt-4 text-center cursor-pointer text-main-blue font-semibold">Lihat seluruh
-                    jurnal anda</h1>
+                  <!-- <h1 class="text-[12px] mt-4 text-center cursor-pointer text-main-blue font-semibold">Lihat seluruh
+                    jurnal anda</h1> -->
                 </div>
                 <div v-else class="w-full flex flex-col justify-center items-center">
                   <div class="w-[100px]">
@@ -148,12 +150,12 @@ onMounted(() => {
 
             <CardProfile title="Pengabdian Masyarakat">
               <template v-slot:body>
-                <div v-if="jurnal.length > 0">
+                <div v-if="pkm.length > 0">
 
                   <div class="flex flex-col gap-6">
 
                     <div v-for="item in pkm" :key="item.id"
-                      class="text-[14px] border-black  text-main-blue flex flex-col gap-1">
+                      class="text-[14px] border-b border-main-blue pb-2  text-main-blue flex flex-col gap-1">
                       <h1 class="text-xs font-medium">{{ item.judul }}</h1>
                       <p class="text-xs text-main-blue">{{ item.lokasiKegiatan }}</p>
                       <p class="text-main-blue text-[10px] font-light">{{ item.nomorSkPengesahan }}</p>
@@ -165,8 +167,7 @@ onMounted(() => {
 
                     </div>
                   </div>
-                  <h1 class="text-[12px] mt-4 text-center cursor-pointer text-main-blue font-semibold">Lihat seluruh
-                    pengabdian anda anda</h1>
+
                 </div>
                 <div v-else class="w-full flex flex-col justify-center items-center">
                   <div class="w-[100px]">

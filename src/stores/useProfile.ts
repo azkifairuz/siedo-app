@@ -55,7 +55,6 @@ export const useUser = defineStore("profile", {
             },
           }
         );
-        console.log(response.data.statusCode);
         
         if (response.data.statusCode != 200) {
           this.massage = response.data.message;

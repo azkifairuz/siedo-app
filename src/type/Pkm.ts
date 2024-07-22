@@ -1,12 +1,19 @@
 export type Pkm = {
-    id: number;
-    NIDN: string;
-    semesterAktif: string;
-    judul: string;
-    tahunPelaksanaan: string;
-    lamaKegiatan: string;
-    lokasiKegiatan: string;
-    nomorSkPengesahan: string;
-    uploadDocument: string;
-  };
-  
+  id: number;
+  NIDN: string;
+  semesterAktif: string;
+  judul: string;
+  tahunPelaksanaan: string;
+  lamaKegiatan: string;
+  lokasiKegiatan: string;
+  nomorSkPengesahan: string;
+  uploadDocument: string;
+};
+
+export type PkmRequest = {
+  judul: string;
+  tahunPelaksanaan: string;
+  lamaKegiatan: string;
+  lokasiKegiatan: string;
+  nomorSkPengesahan: string;
+};

@@ -10,6 +10,7 @@ import { useUser } from "@/stores/useProfile";
 import IzinView from "@/views/presensi/IzinView.vue";
 import EditBiodata from "@/views/profile/EditBiodata.vue";
 import EditProfile from "@/views/profile/EditProfile.vue";
+import CreateJurnal from "@/views/profile/CreateJurnal.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -60,6 +61,12 @@ const router = createRouter({
       path: "/profile/biodata",
       name: "edit-biodata",
       component: EditBiodata,
+      meta: { requiresAuth: true},
+    },
+    {
+      path: "/jurnal/create",
+      name: "create-jurnal",
+      component: CreateJurnal,
       meta: { requiresAuth: true},
     },
     {
